@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 
+# noinspection SpellCheckingInspection
 def create_mel(wav_file_path, mel_file_name):
     """Takes a path to a .wav file and creates a mel spectrogram in the cwd (current working directory)"""
 
@@ -20,36 +21,43 @@ def create_mel(wav_file_path, mel_file_name):
     plt.savefig(mel_file_name)
 
 
-def get_file_paths_in_folder(folder_path, suffix='.wav'):
+def get_file_paths_in_folder(given_folder_path, suffix='.wav'):
     new_wav_paths = []
-    iterable = folder_path.iterdir()
-    for i in iterable:
-        if i.suffix == suffix:
-            new_wav_paths.append(i)
+    iterable = given_folder_path.iterdir()
+    for j in iterable:
+        if j.suffix == suffix:
+            new_wav_paths.append(j)
     return new_wav_paths
 
 
-def get_subpath(path, subfolder_name):
-    subpath = path / subfolder_name
-    return subpath
+def get_sub_path(path, sub_folder_name):
+    new_path = path / sub_folder_name
+    return new_path
 
 
-def get_wav_paths(basepath, folders):
-    all_paths = []
-    for i in folder_list:
-        subpath = get_subpath(basepath, i)
-        wav_paths.append(get_file_paths_in_folder(subpath))
-    return wav_paths
+def get_wav_paths(base_path, folders):
+    folder_paths = []
+    for j in folders:
+        sub_path = get_sub_path(base_path, j)
+        folder_paths.append(get_file_paths_in_folder(sub_path))
+    return folder_paths
 
 
 def mel_file_name_creator(wav_file_name):
+    mel_file_name = wav_file_name + '_mel.jpg'
     return mel_file_name
 
 
-folderpath = './genres' # or Path.cwd() / 'genres'
-folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
-wav_paths = get_wav_paths(folderpath, folder_list)
+genres_folder_path = Path.cwd() / 'genres' #'./genres' # or Path.cwd() / 'genres'
+genres_folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
+wav_paths = get_wav_paths(genres_folder_path, genres_folder_list)
 
+all_paths = []
 for i in wav_paths:
-    mel_name = mel_file_name_creator(i)
-    create_mel(i, mel_name)
+    for path in i:
+        all_paths.append(path)
+
+
+for path in all_paths:
+    mel_name = mel_file_name_creator(str(path))
+    create_mel(path, mel_name)

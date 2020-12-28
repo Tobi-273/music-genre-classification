@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def create_mel(wav_file_path, mel_file_name):
-    """Takes a path to a .wav file and creates a mel spectogram in the cwd (current working directory)"""
+    """Takes a path to a .wav file and creates a mel spectrogram in the cwd (current working directory)"""
 
     y, sr = librosa.load(wav_file_path)
 

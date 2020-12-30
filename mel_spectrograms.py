@@ -34,9 +34,9 @@ def get_file_paths_in_folder(given_folder_path, suffix='.wav'):
     return new_wav_paths
 
 
-def get_sub_path(path, sub_folder_name):
-    """Returns the subpath of a given folder in a given path"""
-    new_path = path / sub_folder_name
+def get_sub_path(old_path, sub_folder_name):
+    """Returns the sub path of a given folder in a given path"""
+    new_path = old_path / sub_folder_name
     return new_path
 
 
@@ -54,8 +54,8 @@ def mel_file_name_creator(wav_file_name):
     mel_file_name = wav_file_name + '_mel.jpg'
     return mel_file_name
 
-# collecting the file paths of all .wav files
-genres_folder_path = Path.cwd() / 'genres' #'./genres' # or Path.cwd() / 'genres'
+
+genres_folder_path = Path.cwd() / 'genres'  # or './genres'
 genres_folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
 wav_paths = get_wav_paths(genres_folder_path, genres_folder_list)
 
@@ -66,7 +66,7 @@ for i in wav_paths:
         all_paths.append(path)
 print('Paths have been collected.')
 
-# generating the spectrograms as .jpg files in the folders corresponfing to the .wav files. This may take a while.
+# generating the spectrograms as .jpg files in the folders corresponding to the .wav files. This may take a while.
 print('Spectrogram generation in process.')
 for path in all_paths:
     mel_name = mel_file_name_creator(str(path))

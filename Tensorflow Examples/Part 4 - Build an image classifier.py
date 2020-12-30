@@ -1,3 +1,7 @@
+# from https://colab.research.google.com/github/lmoroney/
+# dlaicourse/blob/master/Course%202%20-%20Part%208%20-%20Lesson%202%20-%20Notebook%20(RockPaperScissors).ipynb#scrollTo=ZABJp7T3VLCU
+
+''' # this is also in the jupyter notebook
 !wget - -no - check - certificate \
     https: // storage.googleapis.com / laurencemoroney - blog.appspot.com / rps.zip \
               - O / tmp / rps.zip
@@ -5,7 +9,7 @@
 !wget - -no - check - certificate \
     https: // storage.googleapis.com / laurencemoroney - blog.appspot.com / rps - test - set.zip \
               - O / tmp / rps - test - set.zip
-
+'''
 
 import os
 import zipfile

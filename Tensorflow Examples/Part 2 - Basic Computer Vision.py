@@ -8,8 +8,9 @@ mnist = tf.keras.datasets.fashion_mnist
 
 # loading the dataset
 (training_images, training_labels), (test_images, test_labels) = mnist.load_data()
+print(f'Der Dateityp ist {type(training_images)}')
 
-# normalizing the labels
+# normalizing the training data
 training_images = training_images / 255.0
 test_images = test_images / 255.0
 

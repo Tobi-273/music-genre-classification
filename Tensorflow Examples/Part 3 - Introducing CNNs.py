@@ -1,3 +1,6 @@
+# from https://colab.research.google.com/github/lmoroney/
+# mlday-tokyo/blob/master/Lab3-What-Are-Convolutions.ipynb#scrollTo=sN3imZannN5J
+
 # import opencv-python
 import numpy as np
 from scipy import misc

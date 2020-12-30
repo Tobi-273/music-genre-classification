@@ -1,3 +1,5 @@
+"""Code for generating spectrograms"""
+
 import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
@@ -52,7 +54,7 @@ def mel_file_name_creator(wav_file_name):
     mel_file_name = wav_file_name + '_mel.jpg'
     return mel_file_name
 
-
+# collecting the file paths of all .wav files
 genres_folder_path = Path.cwd() / 'genres' #'./genres' # or Path.cwd() / 'genres'
 genres_folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
 wav_paths = get_wav_paths(genres_folder_path, genres_folder_list)
@@ -64,6 +66,7 @@ for i in wav_paths:
         all_paths.append(path)
 print('Paths have been collected.')
 
+# generating the spectrograms as .jpg files in the folders corresponfing to the .wav files. This may take a while.
 print('Spectrogram generation in process.')
 for path in all_paths:
     mel_name = mel_file_name_creator(str(path))

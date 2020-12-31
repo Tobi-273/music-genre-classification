@@ -55,7 +55,7 @@ def mel_file_name_creator(wav_file_name):
     return mel_file_name
 
 
-genres_folder_path = Path.cwd() / 'genres'  # or './genres'
+genres_folder_path = Path.cwd() / 'genres_mini_training (.wav)'  # or './genres'
 genres_folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
 wav_paths = get_wav_paths(genres_folder_path, genres_folder_list)
 

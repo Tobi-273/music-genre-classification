@@ -34,17 +34,11 @@ def get_file_paths_in_folder(given_folder_path, suffix='.wav'):
     return new_wav_paths
 
 
-def get_sub_path(old_path, sub_folder_name):
-    """Returns the sub path of a given folder in a given path"""
-    new_path = old_path / sub_folder_name
-    return new_path
-
-
-def get_wav_paths(base_path, folders):
+def get_all_wav_paths(base_path, folders):
     """Goes through a list of given folder names and returns all paths with the .wav suffix"""
     folder_paths = []
     for j in folders:
-        sub_path = get_sub_path(base_path, j)
+        sub_path = base_path / j
         folder_paths.append(get_file_paths_in_folder(sub_path, suffix='.wav'))
     return folder_paths
 
@@ -57,13 +51,14 @@ def mel_file_name_creator(wav_file_name):
 
 genres_folder_path = Path.cwd() / 'genres_mini_training (.wav)'  # or './genres'
 genres_folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
-wav_paths = get_wav_paths(genres_folder_path, genres_folder_list)
+wav_paths = get_all_wav_paths(genres_folder_path, genres_folder_list)
 
 # apparently there are several sub lists in wav_paths, so this puts every path in list on the same level
 all_paths = []
 for i in wav_paths:
     for path in i:
         all_paths.append(path)
+
 print('Paths have been collected.')
 
 # generating the spectrograms as .jpg files in the folders corresponding to the .wav files. This may take a while.

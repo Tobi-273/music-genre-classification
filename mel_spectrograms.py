@@ -24,8 +24,8 @@ def create_mel(wav_file_path, mel_file_name):
     plt.savefig(mel_file_name)
 
 
-def get_file_paths_in_folder(given_folder_path, suffix='.wav'):
-    """Looks for all the folder paths with a certain suffix and returns those, standard is .wav"""
+def get_file_paths_in_folder(given_folder_path, suffix=None):
+    """Looks for all the folder paths with a certain suffix and returns those"""
     new_wav_paths = []
     iterable = given_folder_path.iterdir()
     for j in iterable:
@@ -34,12 +34,12 @@ def get_file_paths_in_folder(given_folder_path, suffix='.wav'):
     return new_wav_paths
 
 
-def get_all_wav_paths(base_path, folders):
-    """Goes through a list of given folder names and returns all paths with the .wav suffix"""
+def get_all_paths(base_path, folders, suffix):
+    """Goes through a list of given folder names and returns all paths with a given suffix"""
     folder_paths = []
     for j in folders:
         sub_path = base_path / j
-        folder_paths.append(get_file_paths_in_folder(sub_path, suffix='.wav'))
+        folder_paths.append(get_file_paths_in_folder(sub_path, suffix=suffix))
     return folder_paths
 
 
@@ -51,7 +51,7 @@ def mel_file_name_creator(wav_file_name):
 
 genres_folder_path = Path.cwd() / 'genres_mini_training (.wav)'  # or './genres'
 genres_folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
-wav_paths = get_all_wav_paths(genres_folder_path, genres_folder_list)
+wav_paths = get_all_paths(genres_folder_path, genres_folder_list, '.wav')
 
 # apparently there are several sub lists in wav_paths, so this puts every path in list on the same level
 all_paths = []

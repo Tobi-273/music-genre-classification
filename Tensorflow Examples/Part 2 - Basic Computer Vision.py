@@ -1,6 +1,7 @@
 # from https://colab.research.google.com/github/lmoroney/
 # mlday-tokyo/blob/master/Lab2-Computer-Vision.ipynb#scrollTo=WzlqsEzX9s5P
 
+import numpy as np
 import tensorflow as tf
 print(tf.__version__)
 
@@ -9,8 +10,12 @@ mnist = tf.keras.datasets.fashion_mnist
 # loading the dataset
 (training_images, training_labels), (test_images, test_labels) = mnist.load_data()
 print(f'Der Dateityp von training_images ist {type(training_images)}')
+print(training_images)
+print(training_images.shape)
 print(f'Der Dateityp von training labels ist {type(training_labels)}')
+np.set_printoptions(threshold=np.inf)
 print(training_labels)
+print(training_labels.shape)
 
 # normalizing the training data
 training_images = training_images / 255.0

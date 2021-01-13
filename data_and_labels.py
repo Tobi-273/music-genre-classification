@@ -11,10 +11,14 @@ np.set_printoptions(threshold=np.inf)
 genres_folder_path = Path.cwd() / 'genres_mini_training'  # or './genres'
 genres_folder_list = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
 jpg_paths = msg.get_all_paths(genres_folder_path, genres_folder_list, '.jpg')
+#data =
+
+#def get_data():
 img_path = jpg_paths[0][0]
 
 img = mpimg.imread(img_path)
 print(img)
+print(img.shape)
 
 plt.imshow(img)
 plt.show()

@@ -4,6 +4,7 @@ import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
+from PIL import Image
 
 
 # noinspection SpellCheckingInspection
@@ -20,6 +21,11 @@ def create_mel(wav_file_path, mel_file_name):
 
     librosa.display.specshow(mel_spect, y_axis='mel', fmax=8000, x_axis='time')
     # The other example sets only fmax (to the same value), function of other kwargs unclear
+    
+    mel_spect = rgb2gray(mel_spect)
+    # mel_spect is the spectrogram, right?
+    
+    mel_spect = mel_spect.crop((54, 35, 390, 253))
 
     plt.savefig(mel_file_name)
 
@@ -47,6 +53,10 @@ def mel_file_name_creator(wav_file_name):
     """Creates a new file name for the spectrogram"""
     mel_file_name = wav_file_name + '_mel.jpg'
     return mel_file_name
+
+
+def rgb2gray(image):
+    return image.convert(mode='L')
 
 
 def main():

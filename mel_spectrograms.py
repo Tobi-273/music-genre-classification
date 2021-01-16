@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-
 # noinspection SpellCheckingInspection
 def create_mel(wav_file_path, mel_file_name):
     """Creates a mel spectrogram in the cwd (current working directory).
@@ -17,11 +16,14 @@ def create_mel(wav_file_path, mel_file_name):
     # In another example for using this package (but not related to this task: (y=y, sr=sr, n_mels=128, fmax=8000)
 
     mel_spect = librosa.power_to_db(s, ref=np.max)
+    
+    ax = plt.axes()
+    ax.set_axis_off()
 
-    librosa.display.specshow(mel_spect, y_axis='mel', fmax=8000, x_axis='time')
-    # The other example sets only fmax (to the same value), function of other kwargs unclear
-
-    plt.savefig(mel_file_name)
+    librosa.display.specshow(mel_spect, fmax=8000, cmap='gray_r')
+    
+    plt.savefig(mel_file_name, bbox_inches='tight', transparent=True, pad_inches=0.0)
+    # not sure what the inches mean, but it was just in an example and works
 
 
 def get_file_paths_in_folder(given_folder_path, suffix=None):

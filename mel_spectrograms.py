@@ -4,10 +4,6 @@ import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
-from PIL import Image
-from skimage.color import rgb2gray
-from numpy import asarray
-
 
 # noinspection SpellCheckingInspection
 def create_mel(wav_file_path, mel_file_name):
@@ -20,19 +16,14 @@ def create_mel(wav_file_path, mel_file_name):
     # In another example for using this package (but not related to this task: (y=y, sr=sr, n_mels=128, fmax=8000)
 
     mel_spect = librosa.power_to_db(s, ref=np.max)
-
-    librosa.display.specshow(mel_spect, y_axis='mel', fmax=8000, x_axis='time')
-    # The other example sets only fmax (to the same value), function of other kwargs unclear
     
-    # convert to grayscale
-    mel_spect = rgb2gray(mel_spect)
+    ax = plt.axes()
+    ax.set_axis_off()
 
-    # convert to image, crop, convert back to array
-    mel_image = Image.fromarray(mel_spect)
-    mel_image = mel_image.crop((54, 35, 390, 253))
-    mel_spect = asarray(mel_image)
-
-    plt.savefig(mel_file_name)
+    librosa.display.specshow(mel_spect, fmax=8000, cmap='gray_r')
+    
+    plt.savefig(mel_file_name, bbox_inches='tight', transparent=True, pad_inches=0.0)
+    # not sure what the inches mean, but it was just in an example and works
 
 
 def get_file_paths_in_folder(given_folder_path, suffix=None):

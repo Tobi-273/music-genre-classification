@@ -21,8 +21,6 @@ test_data_gen = ImageDataGenerator(rescale=1./255).flow_from_directory(
     target_size=(IMG_HEIGHT, IMG_WIDTH),
     class_mode='categorical')
 
-sample_training_images, _ = next(train_data_gen)
-
 
 # design the model
 model = tf.keras.models.Sequential([tf.keras.layers.Flatten(),
@@ -34,30 +32,52 @@ model.compile(optimizer=tf.keras.optimizers.Adam(),
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-# train the model
-model.fit(train_data_gen, epochs=5)
 
-# evaluate the model
+# Version 1
+model.fit(train_data_gen, epochs=5)
 model.evaluate(test_data_gen)
 model.summary()
 model.save("saved_model")
-'''
-blues_dir = os.path.join('./genres_mini_training/blues')
-classical_dir = os.path.join('./genres_mini_training/classical')
 
-print('total blues spectrograms:', len(os.listdir(blues_dir)))
-print('total classical spectrograms:', len(os.listdir(classical_dir)))
-
-complete_dir = os.path.join('./genres_mini_training')
-print('total spectrograms: ', len(os.listdir(complete_dir)))
 '''
-'''
-TRAINING_DIR = "./genres_mini_training"
-training_datagen = ImageDataGenerator(rescale=1./255)
+# Version 2
+history = model.fit(train_data_gen, epochs=25, steps_per_epoch=20, validation_data = test_data_gen, verbose = 1, 
+validation_steps=3)
 
-train_generator = training_datagen.flow_from_directory(
-    TRAINING_DIR,
-    target_size=(150,150),
-    class_mode='categorical',
-    batch_size=126)
+model.save("rps.h5")
+
+
+import matplotlib.pyplot as plt
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs = range(len(acc))
+
+plt.plot(epochs, acc, 'r', label='Training accuracy')
+plt.plot(epochs, val_acc, 'b', label='Validation accuracy')
+plt.title('Training and validation accuracy')
+plt.legend(loc=0)
+plt.figure()
+
+plt.show()
+
+import numpy as np
+from google.colab import files
+from keras.preprocessing import image
+
+uploaded = files.upload()
+
+for fn in uploaded.keys():
+    # predicting images
+    path = fn
+    img = image.load_img(path, target_size=(150, 150))
+    x = image.img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+
+    images = np.vstack([x])
+    classes = model.predict(images, batch_size=10)
+    print(fn)
+    print(classes)
 '''

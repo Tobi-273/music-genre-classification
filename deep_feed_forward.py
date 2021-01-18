@@ -1,6 +1,7 @@
 # batch size, epochs, loss, metrics, optimizer, model
 
 import tensorflow as tf
+import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from pathlib import Path
 
@@ -34,10 +35,35 @@ model.compile(optimizer=tf.keras.optimizers.Adam(),
 
 
 # Version 1
-model.fit(train_data_gen, epochs=5)
+history = model.fit(train_data_gen, epochs=5)
 model.evaluate(test_data_gen)
 model.summary()
 model.save("saved_model")
+
+# plot training and validation loss
+loss_train = history.history['loss']
+# loss_val = history.history['val_loss']
+epochs = range(1, 6)
+plt.plot(epochs, loss_train, 'g', label='Training loss')
+# plt.plot(epochs, loss_val, 'b', label='validation loss')
+plt.title('Training and Validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+# plot training and validation accuracy
+loss_train = history.history['accuracy']
+# loss_val = history.history['val_acc']
+epochs = range(1, 6)
+plt.plot(epochs, loss_train, 'g', label='Training accuracy')
+# plt.plot(epochs, loss_val, 'b', label='validation accuracy')
+plt.title('Training and Validation accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
 
 '''
 # Version 2

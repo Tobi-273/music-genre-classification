@@ -13,7 +13,7 @@ test_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studi
 
 IMG_HEIGHT = 217
 IMG_WIDTH = 334
-epochs = 20
+epochs = 50
 
 img_data_gen = ImageDataGenerator(rescale=1./255)
 

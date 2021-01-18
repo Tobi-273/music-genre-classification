@@ -16,22 +16,23 @@ IMG_WIDTH = 334
 epochs = 50
 batch_size = 1
 
-img_data_gen = ImageDataGenerator(rescale=1./255)
+training_generator = ImageDataGenerator(rescale=1./255, validation_split=0.15)
 
-train_data_gen = img_data_gen.flow_from_directory(
-    directory=train_dir,
-    target_size=(IMG_HEIGHT, IMG_WIDTH),
-    batch_size=batch_size,
-    class_mode='categorical')
-
-validation_data_gen = img_data_gen.flow_from_directory(
+train_data_gen = training_generator.flow_from_directory(
     directory=train_dir,
     target_size=(IMG_HEIGHT, IMG_WIDTH),
     batch_size=batch_size,
     class_mode='categorical',
-    subset='validation')  # set as validation data
+    subset='training')
 
-test_data_gen = img_data_gen.flow_from_directory(
+validation_data_gen = training_generator.flow_from_directory(
+    directory=train_dir,
+    target_size=(IMG_HEIGHT, IMG_WIDTH),
+    batch_size=batch_size,
+    class_mode='categorical',
+    subset='validation')
+
+test_data_gen = ImageDataGenerator(rescale=1./255).flow_from_directory(
     directory=test_dir,
     target_size=(IMG_HEIGHT, IMG_WIDTH),
     class_mode='categorical')
@@ -54,7 +55,8 @@ history = model.fit(
     epochs=epochs,
     batch_size=1,
     validation_data=validation_data_gen,
-    steps_per_epoch=train_data_gen.samples // batch_size,
+    # steps_per_epoch=train_data_gen.samples // batch_size,
+    steps_per_epoch=25,
     validation_steps=validation_data_gen.samples // batch_size)
 
 model.evaluate(test_data_gen)
@@ -66,7 +68,7 @@ loss_train = history.history['loss']
 loss_val = history.history['val_loss']
 epochs_loss = range(1, (epochs+1))
 plt.plot(epochs_loss, loss_train, 'g', label='Training loss')
-plt.plot(epochs, loss_val, 'b', label='validation loss')
+plt.plot(epochs_loss, loss_val, 'b', label='validation loss')
 plt.title('Training and Validation loss')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
@@ -75,10 +77,10 @@ plt.show()
 
 # plot training and validation accuracy
 loss_train = history.history['accuracy']
-loss_val = history.history['val_acc']
+loss_val = history.history['val_accuracy']
 epochs_accuracy = range(1, (epochs+1))
 plt.plot(epochs_accuracy, loss_train, 'g', label='Training accuracy')
-plt.plot(epochs, loss_val, 'b', label='validation accuracy')
+plt.plot(epochs_accuracy, loss_val, 'b', label='validation accuracy')
 plt.title('Training and Validation accuracy')
 plt.xlabel('Epochs')
 plt.ylabel('Accuracy')

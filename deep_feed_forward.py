@@ -21,11 +21,13 @@ img_data_gen = ImageDataGenerator(rescale=1./255)
 train_data_gen = img_data_gen.flow_from_directory(
     directory=train_dir,
     target_size=(IMG_HEIGHT, IMG_WIDTH),
+    batch_size=batch_size,
     class_mode='categorical')
 
 validation_data_gen = img_data_gen.flow_from_directory(
     directory=train_dir,
     target_size=(IMG_HEIGHT, IMG_WIDTH),
+    batch_size=batch_size,
     class_mode='categorical',
     subset='validation')  # set as validation data
 
@@ -47,7 +49,14 @@ model.compile(optimizer=tf.keras.optimizers.Adam(),
               metrics=['accuracy'])
 
 
-history = model.fit(train_data_gen, epochs=epochs, batch_size=1, validation_data=validation_data_gen)
+history = model.fit(
+    train_data_gen,
+    epochs=epochs,
+    batch_size=1,
+    validation_data=validation_data_gen,
+    steps_per_epoch=train_data_gen.samples // batch_size,
+    validation_steps=validation_data_gen.samples // batch_size)
+
 model.evaluate(test_data_gen)
 model.summary()
 model.save("saved_model")

@@ -57,8 +57,7 @@ history = model.fit(
     validation_data=validation_data_gen,
     steps_per_epoch=train_data_gen.samples // batch_size,
     #steps_per_epoch=5,
-    validation_steps=validation_data_gen.samples // batch_size
-)
+    validation_steps=validation_data_gen.samples // batch_size)
 
 model.evaluate(test_data_gen)
 model.summary()

@@ -1,4 +1,4 @@
-# batch size, epochs, loss, metrics, optimizer, model
+# batch size, epochs, loss, metrics, optimizer, model, steps_per_epoch, early stopping
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -14,7 +14,7 @@ test_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studi
 IMG_HEIGHT = 217
 IMG_WIDTH = 334
 epochs = 50
-batch_size = 1
+batch_size = 32
 
 training_generator = ImageDataGenerator(rescale=1./255, validation_split=0.15)
 
@@ -53,11 +53,12 @@ model.compile(optimizer=tf.keras.optimizers.Adam(),
 history = model.fit(
     train_data_gen,
     epochs=epochs,
-    batch_size=1,
+    batch_size=batch_size,
     validation_data=validation_data_gen,
-    # steps_per_epoch=train_data_gen.samples // batch_size,
-    steps_per_epoch=25,
-    validation_steps=validation_data_gen.samples // batch_size)
+    steps_per_epoch=train_data_gen.samples // batch_size,
+    #steps_per_epoch=5,
+    validation_steps=validation_data_gen.samples // batch_size
+)
 
 model.evaluate(test_data_gen)
 model.summary()

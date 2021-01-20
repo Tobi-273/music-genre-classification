@@ -1,4 +1,4 @@
-# batch size, epochs, loss, metrics, optimizer, model, steps_per_epoch, early stopping
+# batch size, epochs, loss, metrics, optimizer, model, steps_per_epoch, early stopping, dropout, regularization
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -6,15 +6,25 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from pathlib import Path
 from google.colab import drive
 
+# for comparability of the different models
+import numpy as np
+np.random.seed(5)
+
 drive.mount('/content/drive')
 
-train_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/train'
-test_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/test'
+#train_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/train' #Tobi
+#test_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/test' #Tobi
+
+#train_dir =Path.cwd() / '/content/drive/MyDrive/UNI/Machine Learning/genres/train' #jana
+#test_dir =Path.cwd() / '/content/drive/MyDrive/UNI/Machine Learning/genres/test' #jana
+
+train_dir = Path.cwd() / '/content/drive/MyDrive/Dies und Das/genres/train' #Sandra
+test_dir = Path.cwd() / '/content/drive/MyDrive/Dies und Das/genres/test' #Sandra
 
 IMG_HEIGHT = 217
 IMG_WIDTH = 334
 epochs = 50
-batch_size = 32
+batch_size = 64
 
 training_generator = ImageDataGenerator(rescale=1./255, validation_split=0.15)
 
@@ -56,7 +66,6 @@ history = model.fit(
     batch_size=batch_size,
     validation_data=validation_data_gen,
     steps_per_epoch=train_data_gen.samples // batch_size,
-    #steps_per_epoch=5,
     validation_steps=validation_data_gen.samples // batch_size)
 
 model.evaluate(test_data_gen)

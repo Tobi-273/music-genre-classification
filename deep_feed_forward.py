@@ -7,30 +7,32 @@ from pathlib import Path
 from google.colab import drive
 
 # for comparability of the different models
-import numpy as np
-np.random.seed(5)
+# import numpy as np
+# np.random.seed(5)
 
 drive.mount('/content/drive')
 
-#train_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/train' #Tobi
-#test_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/test' #Tobi
+train_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/train'  # Tobi
+test_dir = Path.cwd() / '/content/drive/MyDrive/AAA Private Ablage/Dateien/Studium/Leuphana/Python/genres/test'  # Tobi
 
-#train_dir =Path.cwd() / '/content/drive/MyDrive/UNI/Machine Learning/genres/train' #jana
-#test_dir =Path.cwd() / '/content/drive/MyDrive/UNI/Machine Learning/genres/test' #jana
+# train_dir =Path.cwd() / '/content/drive/MyDrive/UNI/Machine Learning/genres/train' #jana
+# test_dir =Path.cwd() / '/content/drive/MyDrive/UNI/Machine Learning/genres/test' #jana
 
-train_dir = Path.cwd() / '/content/drive/MyDrive/Dies und Das/genres/train' #Sandra
-test_dir = Path.cwd() / '/content/drive/MyDrive/Dies und Das/genres/test' #Sandra
+# train_dir = Path.cwd() / '/content/drive/MyDrive/Dies und Das/genres/train' #Sandra
+# test_dir = Path.cwd() / '/content/drive/MyDrive/Dies und Das/genres/test' #Sandra
 
 IMG_HEIGHT = 217
 IMG_WIDTH = 334
 epochs = 50
 batch_size = 64
 
-training_generator = ImageDataGenerator(rescale=1./255, validation_split=0.15)
+training_generator = ImageDataGenerator(rescale=1. / 255, validation_split=0.15)
 
 train_data_gen = training_generator.flow_from_directory(
     directory=train_dir,
     target_size=(IMG_HEIGHT, IMG_WIDTH),
+    color_mode='grayscale',
+    seed=5,
     batch_size=batch_size,
     class_mode='categorical',
     subset='training')
@@ -38,15 +40,19 @@ train_data_gen = training_generator.flow_from_directory(
 validation_data_gen = training_generator.flow_from_directory(
     directory=train_dir,
     target_size=(IMG_HEIGHT, IMG_WIDTH),
+    color_mode='grayscale',
+    seed=5,
     batch_size=batch_size,
     class_mode='categorical',
     subset='validation')
 
-test_data_gen = ImageDataGenerator(rescale=1./255).flow_from_directory(
+test_data_gen = ImageDataGenerator(rescale=1. / 255).flow_from_directory(
     directory=test_dir,
     target_size=(IMG_HEIGHT, IMG_WIDTH),
+    color_mode='grayscale',
+    seed=5,
+    batch_size=batch_size,
     class_mode='categorical')
-
 
 # design the model
 model = tf.keras.models.Sequential([tf.keras.layers.Flatten(),
@@ -59,14 +65,15 @@ model.compile(optimizer=tf.keras.optimizers.Adam(),
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-
 history = model.fit(
     train_data_gen,
     epochs=epochs,
     batch_size=batch_size,
     validation_data=validation_data_gen,
     steps_per_epoch=train_data_gen.samples // batch_size,
-    validation_steps=validation_data_gen.samples // batch_size)
+    validation_steps=validation_data_gen.samples // batch_size,
+
+)
 
 model.evaluate(test_data_gen)
 model.summary()
@@ -75,7 +82,7 @@ model.save("saved_model")
 # plot training and validation loss
 loss_train = history.history['loss']
 loss_val = history.history['val_loss']
-epochs_loss = range(1, (epochs+1))
+epochs_loss = range(1, (epochs + 1))
 plt.plot(epochs_loss, loss_train, 'g', label='Training loss')
 plt.plot(epochs_loss, loss_val, 'b', label='validation loss')
 plt.title('Training and Validation loss')
@@ -87,7 +94,7 @@ plt.show()
 # plot training and validation accuracy
 loss_train = history.history['accuracy']
 loss_val = history.history['val_accuracy']
-epochs_accuracy = range(1, (epochs+1))
+epochs_accuracy = range(1, (epochs + 1))
 plt.plot(epochs_accuracy, loss_train, 'g', label='Training accuracy')
 plt.plot(epochs_accuracy, loss_val, 'b', label='validation accuracy')
 plt.title('Training and Validation accuracy')

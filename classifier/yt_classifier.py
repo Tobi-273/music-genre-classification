@@ -4,10 +4,12 @@ from pydub import AudioSegment
 import os
 from pathlib import Path
 from mel_spectrograms import create_mel
+from classifier import classifier
+
 
 # download mp3 audio from youtube link
 print("Insert the YouTube link")
-link = input ("")
+link = input("")
 
 ydl_opts = {
     'format': 'bestaudio/best',
@@ -28,12 +30,13 @@ for j in iterable:
     if j.suffix == '.mp3':
         path = j
 
+
 # selecting 30 second segment
 startMin = 0
-startSec = 00
+startSec = 10
 
 endMin = 0
-endSec = 30
+endSec = 40
 
 # Time to miliseconds
 startTime = startMin*60*1000+startSec*1000
@@ -44,7 +47,7 @@ song = AudioSegment.from_mp3(path)
 extract = song[startTime:endTime]
 
 # Saving
-extract.export(Path.cwd() / 'extraction' / 'extraction.wav', format="wav")
+extract.export(Path.cwd() / 'extraction.wav', format="wav")
 
 
 # getting paths of mp3(s)
@@ -60,4 +63,7 @@ for i in new_paths:
 
 
 # create spectrogram
-create_mel(Path.cwd() / 'extraction' / 'extraction.wav', 'spectrogram.jpg')
+create_mel(Path.cwd() / 'extraction.wav', 'spectrogram.jpg')
+
+# run classifier
+print(classifier(Path.cwd() / '30s_model', Path.cwd() / 'spectrogram.jpg'))

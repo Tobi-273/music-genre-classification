@@ -11,7 +11,7 @@ from pathlib import Path
 from pydub import AudioSegment
 import glob
 
-song_dir = Path.cwd() / 'genres_mini_training(.wav)' / 'rock'
+song_dir = Path.cwd() / 'genres_mini_training(.wav)' / 'blues'
 
 # function to split songs into snippets and export file
 def split_songs(song, from_sec, to_sec, split_filename):
@@ -24,7 +24,7 @@ def split_songs(song, from_sec, to_sec, split_filename):
 
 
 # iterate over folder directory of songs to split all of them and safe new snippets
-songs = glob.glob('genres_mini_training(.wav)/rock' + '/*.wav')
+songs = glob.glob('genres/blues' + '/*.wav')
 i = 0
 for s in songs:
   print(s)

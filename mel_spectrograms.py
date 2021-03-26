@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
+
 # noinspection SpellCheckingInspection
 def create_mel(wav_file_path, mel_file_name):
     """Creates a mel spectrogram in the cwd (current working directory).

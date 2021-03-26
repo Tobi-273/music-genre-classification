@@ -86,7 +86,7 @@ history = model.fit(
 
 model.evaluate(test_data_gen)
 model.summary()
-model.save("saved_model")
+model.save("30s_model")
 
 # plot training and validation loss
 loss_train = history.history['loss']
